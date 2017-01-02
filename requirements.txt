@@ -44,7 +44,6 @@ scipy==0.18.1
 simplegeneric==0.8.1
 six==1.10.0
 sympy==1.0
-tensorflow==0.11.0
 terminado==0.6
 toolz==0.8.2
 tornado==4.4.2
