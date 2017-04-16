@@ -59,6 +59,11 @@ cars2$Weight = as.integer(as.character(cars2$Weight))
 cars [["Weight"]] = as.integer(as.character(cars[["Weight"]]))
 cars [L,"Weight"] = mean (cars2$Weight)
 
+# Fix the records with (-1) values for Cyl
+L = (Cyl < 0)
+cars2 = cars [!L,]
+cars [L,"Cyl"] = mean (cars2$Cyl)
+
 # Aggregate
 Grouped = aggregate (cars[c(9,10,11,12,13,14,15,16,17)], by = list (Type), FUN = mean)
 write.table (Grouped, "Grouped.csv", sep=",")
@@ -69,6 +74,8 @@ Grouped
 # Handle the fields (missing, factor..)
 L = (Hwy.MPG == '*')
 cars2 = cars [!L,]
+L = (Cyl < 0)
+cars2 = cars2 [!L,]
 cars2$Hwy.MPG = as.integer(as.character(cars2$Hwy.MPG))
 cars2$Cyl = as.integer(as.character(cars2$Cyl))
 
