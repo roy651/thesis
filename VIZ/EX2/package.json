@@ -1,5 +1,5 @@
 {
-  "name": "viz_d3_exec2",
+  "name": "vizd3_xec2",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
@@ -9,7 +9,7 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js"
   },
   "author": "Roy Abitbol & Danny Scheiner",
   "license": "ISC"

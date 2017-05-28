@@ -31,21 +31,21 @@ body {
 }
 </style>
 <body>
-<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="https://d3js.org/d3.v3.min.js"></script>
 
 <script>
 var margin = {top: 20, right: 20, bottom: 30, left: 40},
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
-/* 
+/*
  * value accessor - returns the value to encode for a given data object.
  * scale - maps value to a visual display encoding, such as a pixel position.
  * map function - maps from data value to display value
  * axis - sets up axis
- */ 
+ */
 
-// setup x 
+// setup x
 var xValue = function(d) { return d.HP;}, // data -> value
     xScale = d3.scale.linear().range([0, width]), // value -> display
     xMap = function(d) { return xScale(xValue(d));}, // data -> display
@@ -116,7 +116,7 @@ d3.csv("cars.csv", function(error, data) {
       .attr("r", function(d) { return d.Cyl;})
       .attr("cx", xMap)
       .attr("cy", yMap)
-      .style("fill", function(d) { return color(cValue(d));}) 
+      .style("fill", function(d) { return color(cValue(d));})
       .on("mouseover", function(d) {
 		//g5 = d3.select(this).attr("fill");
 		d3.select(this).style("fill", "red")
