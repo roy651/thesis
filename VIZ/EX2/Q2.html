@@ -24,8 +24,10 @@ body {
 
 .tooltip {
   position: absolute;
-  width: 100px;
-  height: 28px;
+  width: 300px;
+  height: 42px;
+  padding-left: 5px;
+  padding-top: 2px;
   background: none repeat scroll 0 0 #ffffff;
   pointer-events: none;
 }
@@ -123,7 +125,7 @@ d3.csv("cars.csv", function(error, data) {
           tooltip.transition()
                .duration(200)
                .style("opacity", .9);
-          tooltip.html("Hwy MPG: " + d["Hwy MPG"] + "<br/>" + "HP: " + d.HP )
+          tooltip.html("Vehicle Name: " + d["Vehicle Name"] + "<br/>" + "Hwy MPG: " + d["Hwy MPG"] + "<br/>" + "HP: " + d.HP )
                .style("left", (d3.event.pageX + 5) + "px")
                .style("top", (d3.event.pageY - 28) + "px");
       })
@@ -134,6 +136,59 @@ d3.csv("cars.csv", function(error, data) {
                .style("opacity", 0);
       });
 
+  svg.append("circle")
+      .attr("class", "dot")
+      .attr("r", 12)
+      .attr("cx", width - 18)
+      .attr("fill-opacity", 0)
+      .attr("cy", 84);
+  svg.append("text")
+      .attr("x", width - 18)
+      .attr("y", 79)
+      .style("text-anchor", "middle")
+      .style("font-size", 9)
+      .text("12");
+  svg.append("circle")
+      .attr("class", "dot")
+      .attr("r", 8)
+      .attr("cx", width - 18)
+      .attr("fill-opacity", 0)
+      .attr("cy", 88);
+  svg.append("text")
+      .attr("x", width - 18)
+      .attr("y", 87)
+      .style("text-anchor", "middle")
+      .style("font-size", 9)
+      .text("8");
+  svg.append("circle")
+      .attr("class", "dot")
+      .attr("r", 4)
+      .attr("cx", width - 18)
+      .attr("fill-opacity", 0)
+      .attr("cy", 92);
+  svg.append("text")
+      .attr("x", width - 18)
+      .attr("y", 95)
+      .style("text-anchor", "middle")
+      .style("font-size", 9)
+      .text("4");
+
+  svg.append("text")
+      .attr("x", width - 33)
+      .attr("y", 84)
+      .attr("dy", ".35em")
+      .style("text-anchor", "end")
+      .text("Number of Cylinders");
+
+  svg.append("text")
+      .attr("x", (width / 2))
+      .attr("y", (margin.top))
+      .attr("text-anchor", "middle")
+      .style("font-size", 20)
+      .attr("font-family", "sans-serif")
+      .text("Hwy MPG by HP / Cylinders / Car Type");
+
+
   // draw legend
   var legend = svg.selectAll(".legend")
       .data(color.domain())
@@ -143,14 +198,14 @@ d3.csv("cars.csv", function(error, data) {
 
   // draw legend colored rectangles
   legend.append("rect")
-      .attr("x", width - 18)
+      .attr("x", width - 27)
       .attr("width", 18)
       .attr("height", 18)
       .style("fill", color);
 
   // draw legend text
   legend.append("text")
-      .attr("x", width - 24)
+      .attr("x", width - 33)
       .attr("y", 9)
       .attr("dy", ".35em")
       .style("text-anchor", "end")
