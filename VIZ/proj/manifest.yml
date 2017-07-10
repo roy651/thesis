@@ -1,0 +1,4 @@
+---
+applications:
+ - name: ds-ra-viz
+   memory: 256M
