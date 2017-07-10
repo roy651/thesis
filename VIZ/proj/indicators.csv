@@ -1,0 +1,26 @@
+Indicator, Description
+SRS Rank,Rank by SRS
+Regular Season Rank,Rank at the end of the regular season
+Final Rank,Rank after the playoff
+League Win Ratio,Regular season Win Ratio
+Age,Average Age of Players
+Wins,# of Wins in the regular season
+Losses,# of Losses in the regular season
+Attendance,Attendance in home court
+MOV,Margin of Victory
+SOS,Strength of Schedule; a rating of strength of schedule
+SRS,Rating System based on average point differential and strength of schedule
+ORtg,Offensive Rating - Points scored per 100 possessions
+DRtg,Defensive Rating - Points allowed per 100 possessions
+Pace,Pace Factor: An estimate of possessions per 48 minutes
+FTr,Free Throw Attempt Rate - # of FT Attempts Per FG Attempt
+3PAr,3-Point Attempt Rate - % of FG Attempts from 3-Point Range
+TS%,True Shooting Percentage - a measure of 2p and 3p and FT shooting efficiency
+oeFG%,Effective Field Goal Percentage - based on 3p and 2p percentage
+oTOV%,Turnover Percentage - per 100 plays
+oORB%,Offensive Rebound Percentage
+oFT/FGA,Free Throws Per Field Goal Attempt
+deFG%,Opponent Effective Field Goal Percentage - based on 3p and 2p percentage
+dTOV%,Opponent Turnover Percentage - per 100 plays
+dDRB%,Defensive Rebound Percentage
+dFT/FGA,Opponent Free Throws Per Field Goal Attempt
