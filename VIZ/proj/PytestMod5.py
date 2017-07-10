@@ -8,10 +8,10 @@ import random as ran
 
 app = dash.Dash()
 
-my_css_url = "./my.css"
-# app.css.append_css({
-#     "external_url": my_css_url
-# })
+my_css_url = "https://raw.githubusercontent.com/roy651/thesis/master/VIZ/proj/my.css"
+app.css.append_css({
+    "external_url": my_css_url
+})
 
 df = pd.read_csv('stats.csv')
 available_indicators = pd.read_csv('indicators.csv')
