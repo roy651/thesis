@@ -2,6 +2,7 @@ import os
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
+from dash.dependencies import Input, Output, State, Event
 import plotly.graph_objs as go
 import pandas as pd
 import logging
@@ -9,11 +10,11 @@ import random as ran
 from flask import Flask, render_template, request, jsonify
 import locale
 
-# server = Flask(__name__)
-# app = dash.Dash(__name__, server=server)
-app = dash.Dash()
+server = Flask(__name__)
+app = dash.Dash(__name__, server=server)
+# app = dash.Dash()
 
-my_css_url = "https://raw.githubusercontent.com/roy651/thesis/master/VIZ/proj/my.css"
+my_css_url = "https://ds-ra-viz.eu-gb.mybluemix.net/my.css"
 app.css.append_css({
     "external_url": my_css_url
 })
@@ -22,7 +23,7 @@ df = pd.read_csv('1.csv')
 available_indicators = pd.read_csv('indicators.csv')
 
 app.layout = html.Div([
-    html.H1('NBA Stats'),
+    html.H1('NBA Stats', id="page_header"),
     html.H2('An interactive visualization exploring correlation between various factors influencing the NBA\'s teams success'),
     html.H4('Select from the left spinner the desired X axis metric and from the right spinner the Y axis metric. Select a year from the timeline slider and observe the scatter plot. Hovering over the balloons in the plot highlights the team\'s name and its respective X and Y values. Hovering also allows drilling down into a detailed timeline of the specific team for the selected X and Y metrics.'),
     # html.H4('At the bottom, there are a number of preset buttons setting the charts to several chosen setups allowing a story like view of the data.'),
@@ -78,6 +79,8 @@ app.layout = html.Div([
         )
     ], style={'padding': '0 20'}),
 
+    html.Hr(style={'border-width': '3px'}),
+
     html.Div([
         dcc.Graph(id='x-time-series'),
     ], style={'display': 'inline-block', 'width': '49%'}),
@@ -86,10 +89,19 @@ app.layout = html.Div([
         dcc.Graph(id='y-time-series'),
     ], style={'display': 'inline-block', 'width': '49%', 'float': 'right'}),
 
-    # html.Button(names='test')
+    # html.Button(children=['Preset 1'], type='submit', id='preset1')
 
 ])
 
+# @app.callback(Output('page_header', 'children'),
+#     [dash.dependencies.Input('crossfilter-indicator-scatter', 'hoverData')],
+#     events=[Event('preset1', 'click')])
+# def preset1Click(hoverData):
+#     team_name = hoverData['points'][0]['customdata']
+#     dff = df[df['Team'] == team_name]
+#     dff = dff[dff['Indicator Name'] == 'SRS']
+#     title = '<b>{}</b><br>{}'.format(team_name, 'SRS')
+#     return create_time_series(dff, title)
 
 @app.callback(
     dash.dependencies.Output('crossfilter-indicator-scatter', 'figure'),
@@ -170,10 +182,10 @@ def create_time_series(dff, title):
     [dash.dependencies.Input('crossfilter-indicator-scatter', 'hoverData'),
      dash.dependencies.Input('crossfilter-xaxis-column', 'value')])
 def update_y_timeseries(hoverData, xaxis_column_name):
-    country_name = hoverData['points'][0]['customdata']
-    dff = df[df['Team'] == country_name]
+    team_name = hoverData['points'][0]['customdata']
+    dff = df[df['Team'] == team_name]
     dff = dff[dff['Indicator Name'] == xaxis_column_name]
-    title = '<b>{}</b><br>{}'.format(country_name, xaxis_column_name)
+    title = '<b>{}</b><br>{}'.format(team_name, xaxis_column_name)
     return create_time_series(dff, title)
 
 @app.callback(
@@ -188,5 +200,5 @@ def update_x_timeseries(hoverData, yaxis_column_name):
 port = int(os.getenv('PORT', 8080))
 
 if __name__ == '__main__':
-    app.run_server()
-    # server.run(host='0.0.0.0', port=port, debug=True)
+    # app.run_server()
+    server.run(host='0.0.0.0', port=port, debug=True)
