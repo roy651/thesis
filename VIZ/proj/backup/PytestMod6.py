@@ -9,24 +9,18 @@ import random as ran
 from flask import Flask, render_template, request, jsonify
 import locale
 
-# server = Flask(__name__)
-# app = dash.Dash(__name__, server=server)
+#server = Flask(__name__)
+#app = dash.Dash(__name__, server=server)
 app = dash.Dash()
-
 my_css_url = "https://raw.githubusercontent.com/roy651/thesis/master/VIZ/proj/my.css"
 app.css.append_css({
     "external_url": my_css_url
 })
 
-df = pd.read_csv('1.csv')
+df = pd.read_csv('23.csv')
 available_indicators = pd.read_csv('indicators.csv')
 
 app.layout = html.Div([
-    html.H1('NBA Stats'),
-    html.H2('An interactive visualization exploring correlation between various factors influencing the NBA\'s teams success'),
-    html.H4('Select from the left spinner the desired X axis metric and from the right spinner the Y axis metric. Select a year from the timeline slider and observe the scatter plot. Hovering over the balloons in the plot highlights the team\'s name and its respective X and Y values. Hovering also allows drilling down into a detailed timeline of the specific team for the selected X and Y metrics.'),
-    # html.H4('At the bottom, there are a number of preset buttons setting the charts to several chosen setups allowing a story like view of the data.'),
-
     html.Div([
 
         html.Div([
@@ -84,9 +78,7 @@ app.layout = html.Div([
 
     html.Div([
         dcc.Graph(id='y-time-series'),
-    ], style={'display': 'inline-block', 'width': '49%', 'float': 'right'}),
-
-    # html.Button(names='test')
+    ], style={'display': 'inline-block', 'width': '49%'}),
 
 ])
 
@@ -126,7 +118,8 @@ def update_graph(xaxis_column_name, yaxis_column_name,
                 'color': dff[dff['Indicator Name'] == 'Primary Color']['Value'],
                 'size': size
 
-            }
+            },
+            displayModeBar=False
         )],
         'layout': go.Layout(
             xaxis={
@@ -185,8 +178,17 @@ def update_x_timeseries(hoverData, yaxis_column_name):
     dff = dff[dff['Indicator Name'] == yaxis_column_name]
     return create_time_series(dff, yaxis_column_name)
 
+def rannum(data):
+    a = ran.randint(10, 30)
+ #   logging.warning("Value1="+str(dffc['Value']))
+
+    return {
+        a
+    }
+
+
+
 port = int(os.getenv('PORT', 8080))
 
 if __name__ == '__main__':
-    app.run_server()
-    # server.run(host='0.0.0.0', port=port, debug=True)
+     app.run_server()

@@ -7,26 +7,19 @@ import pandas as pd
 import logging
 import random as ran
 from flask import Flask, render_template, request, jsonify
-import locale
 
-# server = Flask(__name__)
-# app = dash.Dash(__name__, server=server)
-app = dash.Dash()
+server = Flask(__name__)
+app = dash.Dash(__name__, server=server)
 
 my_css_url = "https://raw.githubusercontent.com/roy651/thesis/master/VIZ/proj/my.css"
 app.css.append_css({
     "external_url": my_css_url
 })
 
-df = pd.read_csv('1.csv')
+df = pd.read_csv('stats.csv')
 available_indicators = pd.read_csv('indicators.csv')
 
 app.layout = html.Div([
-    html.H1('NBA Stats'),
-    html.H2('An interactive visualization exploring correlation between various factors influencing the NBA\'s teams success'),
-    html.H4('Select from the left spinner the desired X axis metric and from the right spinner the Y axis metric. Select a year from the timeline slider and observe the scatter plot. Hovering over the balloons in the plot highlights the team\'s name and its respective X and Y values. Hovering also allows drilling down into a detailed timeline of the specific team for the selected X and Y metrics.'),
-    # html.H4('At the bottom, there are a number of preset buttons setting the charts to several chosen setups allowing a story like view of the data.'),
-
     html.Div([
 
         html.Div([
@@ -35,8 +28,8 @@ app.layout = html.Div([
                 options=[{'label': j, 'value': i} for i,j in available_indicators.itertuples(index=False)],
                 value='Regular Season Rank'
             )
-        ], style={'width': '49%', 'display': 'inline-block'}),
-
+        ],
+        style={'width': '49%', 'display': 'inline-block'}),
 
         html.Div([
             dcc.Dropdown(
@@ -44,27 +37,7 @@ app.layout = html.Div([
                 options=[{'label': j, 'value': i} for i,j in available_indicators.itertuples(index=False)],
                 value='Final Rank'
             )
-        ], style={'width': '49%', 'float': 'right', 'display': 'inline-block'}),
-
-        html.Label('Choose Year:'),
-
-        html.Div(dcc.Slider(
-            id='crossfilter-year--slider',
-            min=df['Year'].min(),
-            max=df['Year'].max(),
-            value=df['Year'].max(),
-            step=None,
-            marks={str(year): str(year) for year in df['Year'].unique()}
-        ), style={'padding': '0px 20px 20px 20px'}),
-
-        dcc.Checklist(
-            id='my-dropdown',
-                options=[
-                    {'label': 'Size As Budget', 'value': 'True'}
-                ],
-                values=['True'],
-                labelStyle={'display': 'inline-block'}
-        ),
+        ], style={'width': '49%', 'float': 'right', 'display': 'inline-block'})
     ], style={
         'borderBottom': 'thin lightgrey solid',
         'backgroundColor': 'rgb(250, 250, 250)',
@@ -78,36 +51,34 @@ app.layout = html.Div([
         )
     ], style={'padding': '0 20'}),
 
+    html.Div(dcc.Slider(
+        id='crossfilter-year--slider',
+        min=df['Year'].min(),
+        max=df['Year'].max(),
+        value=df['Year'].max(),
+        step=None,
+        marks={str(year): str(year) for year in df['Year'].unique()}
+    ), style={'padding': '0px 20px 20px 20px'}),
+
     html.Div([
         dcc.Graph(id='x-time-series'),
     ], style={'display': 'inline-block', 'width': '49%'}),
 
     html.Div([
         dcc.Graph(id='y-time-series'),
-    ], style={'display': 'inline-block', 'width': '49%', 'float': 'right'}),
-
-    # html.Button(names='test')
+    ], style={'display': 'inline-block', 'width': '49%'}),
 
 ])
-
 
 @app.callback(
     dash.dependencies.Output('crossfilter-indicator-scatter', 'figure'),
     [dash.dependencies.Input('crossfilter-xaxis-column', 'value'),
      dash.dependencies.Input('crossfilter-yaxis-column', 'value'),
-     dash.dependencies.Input('crossfilter-year--slider', 'value'),
-     dash.dependencies.Input('my-dropdown', 'values')])
+     dash.dependencies.Input('crossfilter-year--slider', 'value')])
 def update_graph(xaxis_column_name, yaxis_column_name,
-                 year_value,checkVal):
+                 year_value):
     dff = df[df['Year'] == year_value]
     dffc = dff[dff['Indicator Name'] == 'Conference']
-    print(checkVal)
-    print(len(checkVal))
-    size = 20
-    tooltipText = 'Team: ' + dff[dff['Indicator Name'] == yaxis_column_name]['Team'] +"<br>"+ str(yaxis_column_name) + ': ' +(dff[dff['Indicator Name'] == yaxis_column_name][yaxis_column_name] ).astype(str)+"<br>"+ str(xaxis_column_name) + ': '+(dff[dff['Indicator Name'] == yaxis_column_name][xaxis_column_name] ).astype(str)
-    if (len(checkVal) == 1):
-        size = (dff[dff['Indicator Name'] == yaxis_column_name]['Budget'] /2000000).astype(str)
-        tooltipText = 'Team: ' + dff[dff['Indicator Name'] == yaxis_column_name]['Team'] +"<br>"+ str(yaxis_column_name) + ': ' +(dff[dff['Indicator Name'] == yaxis_column_name][yaxis_column_name] ).astype(str)+"<br>"+ str(xaxis_column_name) + ': '+(dff[dff['Indicator Name'] == yaxis_column_name][xaxis_column_name] ).astype(str)  +'<br>'+'budget: $'+((dff[dff['Indicator Name'] == yaxis_column_name]['Budget'] /1000000).astype(str)) +'M'
     testme='Age'
     return {
         'data': [go.Scatter(
@@ -116,7 +87,7 @@ def update_graph(xaxis_column_name, yaxis_column_name,
             #text=dff[dff['Indicator Name'] == yaxis_column_name]['Team'],
             customdata=dff[dff['Indicator Name'] == yaxis_column_name]['Team'],
             mode='markers',
-            text=tooltipText,#intWithCommas((dff[dff['Indicator Name'] == yaxis_column_name]['Budget'] ).astype(str)),#(dff[dff['Indicator Name'] == yaxis_column_name]['Budget'] ).astype(str),
+            text='Team: ' + dff[dff['Indicator Name'] == yaxis_column_name]['Team'] +"<br>"+ 'Age: ' + (dff[dff['Indicator Name'] == yaxis_column_name]['Age']).astype(str) +"<br>"+ str(yaxis_column_name) + ': ' +(dff[dff['Indicator Name'] == yaxis_column_name][yaxis_column_name]).astype(str),
             # +"<br>"+ ' Rank in League: ' + dff[dff['Indicator Name'] == 'League Rank']['Value'] +"<br>" +' Rank in League: ' + dff[dff['Indicator Name'] == 'Final Rank']['Value'],
             hoverinfo='text',
             marker={
@@ -124,7 +95,7 @@ def update_graph(xaxis_column_name, yaxis_column_name,
                 'opacity': 0.5,
                 'line': {'width': 3, 'color': dff[dff['Indicator Name'] == 'Secondary Color']['Value']},
                 'color': dff[dff['Indicator Name'] == 'Primary Color']['Value'],
-                'size': size
+                'size': (dff[dff['Indicator Name'] == yaxis_column_name]['SRS'] +20).astype(str)
 
             }
         )],
@@ -185,8 +156,15 @@ def update_x_timeseries(hoverData, yaxis_column_name):
     dff = dff[dff['Indicator Name'] == yaxis_column_name]
     return create_time_series(dff, yaxis_column_name)
 
+def rannum(data):
+    a = ran.randint(10, 30)
+    logging.warning("Value1="+str(dffc['Value']))
+
+    return {
+        a
+    }
+
 port = int(os.getenv('PORT', 8080))
 
 if __name__ == '__main__':
-    app.run_server()
-    # server.run(host='0.0.0.0', port=port, debug=True)
+    server.run(host='0.0.0.0', port=port, debug=True)

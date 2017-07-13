@@ -1,11 +1,15 @@
 .modebar.modebar--hover {
-  display: none;
+  display: none !important;
 }
 
 .js-plotly-plot .plotly .modebar.modebar--hover {
-  display: none;
+  display: none !important;
 }
 
 .js-plotly-plot .plotly .modebar {
-  display: none;
+  display: none !important;
+}
+
+.modebar {
+  display: none !important;
 }
