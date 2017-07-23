@@ -1,0 +1,2 @@
+model_checkpoint_path: "/Users/il239838/Development/tf_tutorial/445_19_model400x50.ckpt"
+all_model_checkpoint_paths: "/Users/il239838/Development/tf_tutorial/445_19_model400x50.ckpt"

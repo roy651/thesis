@@ -10,9 +10,9 @@ import random as ran
 from flask import Flask, render_template, request, jsonify
 import locale
 
-server = Flask(__name__)
-app = dash.Dash(__name__, server=server)
-# app = dash.Dash()
+# server = Flask(__name__)
+# app = dash.Dash(__name__, server=server)
+app = dash.Dash()
 
 my_css_url = "https://ds-ra-viz.eu-gb.mybluemix.net/my.css"
 app.css.append_css({
@@ -200,5 +200,5 @@ def update_x_timeseries(hoverData, yaxis_column_name):
 port = int(os.getenv('PORT', 8080))
 
 if __name__ == '__main__':
-    # app.run_server()
-    server.run(host='0.0.0.0', port=port, debug=True)
+    app.run_server()
+    # server.run(host='0.0.0.0', port=port, debug=True)
