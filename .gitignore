@@ -1,1 +1,9 @@
 model.ckpt
+
+activation_img/
+
+google-cloud-sdk/
+
+MNIST_data/
+
+pymorph-0.96/
