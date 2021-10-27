@@ -10,7 +10,7 @@ dash==0.17.7
 dash-core-components==0.5.3
 dash-html-components==0.6.2
 dash-renderer==0.7.3
-dask==0.12.0
+dask==2021.10.0
 decorator==4.0.10
 entrypoints==0.2.2
 Flask==0.12.2
