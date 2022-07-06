@@ -16,7 +16,7 @@ entrypoints==0.2.2
 Flask==0.12.2
 Flask-Compress==1.4.0
 Flask-SeaSurf==0.2.2
-html5lib==0.9999999
+html5lib==0.999999999
 idna==2.5
 ipdb==0.10.2
 ipykernel==4.5.2
