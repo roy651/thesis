@@ -41,7 +41,7 @@ mahotas==1.4.3
 Markdown==2.2.0
 MarkupSafe==0.23
 matplotlib==1.5.3
-mistune==0.7.3
+mistune==2.0.3
 mock==2.0.0
 mpmath==0.19
 nbconvert==4.2.0
